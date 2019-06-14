@@ -55,7 +55,7 @@ def insert(content):
         cur.execute(sql,tuple(content.values()))
         conn.commit()
     except:
-        print('failed!')
+        print('insert failed!')
         conn.rollback()
     conn.close()
 
@@ -72,9 +72,12 @@ def only_insert(content):
     keys=','.join(content.keys())
     values=','.join(['%s']*len(content))
     sql='insert into {table} ({keys}) values ({values})'.format(table=table,keys=keys,values=values)
-
-    cur.execute(sql,tuple(content.values()))
-    conn.commit()
+    try:
+        cur.execute(sql,tuple(content.values()))
+        conn.commit()
+    except:
+        print('insert failed!')
+        conn.rollback()
     conn.close()
 
 #插入更新
@@ -97,6 +100,7 @@ def write_to_mysql(content):
         if cur.execute(sql,tuple(content.values())*2):
             conn.commit()
     except:
+        print('Insert_Update Failed！')
         conn.rollback()
     conn.close()
 
